@@ -30,7 +30,7 @@ public class HBase_test {
 		HBaseAdmin admin = new HBaseAdmin(conf);
 		HTableDescriptor tableDescriptor = admin
 				.getTableDescriptor(org.apache.hadoop.hbase.util.Bytes
-						.toBytes("database"));
+						.toBytes("test"));
 		byte[] name = tableDescriptor.getName();
 		System.out.println(new String(name));
 		HColumnDescriptor[] columnFamilies = tableDescriptor
