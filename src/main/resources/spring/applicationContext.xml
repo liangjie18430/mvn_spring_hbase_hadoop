@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:hdp="http://www.springframework.org/schema/hadoop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-4.2.xsd 
+http://www.springframework.org/schema/aop 
+http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+http://www.springframework.org/schema/hadoop
+http://www.springframework.org/schema/hadoop/spring-hadoop-2.1.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+<!-- xsi:xsi:noNamespaceSchemaLocation="classpath:"> -->
+<!-- xsi:noNamespaceSchemaLocation="classpath:spring-hadoop-2.1.xsd"> -->
+
+
+	<!-- <bean id="basicDao" class="com.lj.mvn_ssh.dao.impl.BasicDaoImpl"> <property 
+		name="sessionFactory" ref="sessionFactory" /> </bean> -->
+
+
+
+	<!-- 下边这里是配置注解的方式 -->
+	<!-- <context:annotation-config /> <context:component-scan base-package="us.xuhang.project.ssh" 
+		/> <context:property-placeholder location="classpath:hibernate.properties"/> -->
+	<!-- <import resource="classpath:hibernate.cfg.xml" /> -->
+	<aop:aspectj-autoproxy />
+	<!-- 定义事务管理器 -->
+	<!-- <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager"> 
+		<property name="sessionFactory" ref="sessionFactory" /> </bean> -->
+
+	<!-- 加载事务驱动 -->
+	<!-- 对@Transactional这个注解进行的驱动，这是基于注解的方式使用事务配置声明，这样在具体应用中可以指定对哪些方法使用事务 -->
+	<!-- <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" 
+		/> -->
+
+	<!-- 事务的策略 -->
+	<!-- <tx:advice id="txAdvice" transaction-manager="transactionManager"> 
+		<tx:attributes> <tx:method name="insert*" propagation="REQUIRED" /> <tx:method 
+		name="save*" propagation="REQUIRED" /> <tx:method name="delete*" propagation="REQUIRED" 
+		/> <tx:method name="update*" propagation="REQUIRED" /> <tx:method name="select*" 
+		propagation="REQUIRED" read-only="true" /> <tx:method name="*" read-only="true" 
+		/> </tx:attributes> </tx:advice> -->
+
+	<!-- AOP配置 -->
+	<!-- <aop:config> 对满足下面表达式的(业务逻辑层)方法实施事务 定义在service包或者子包里的任意方法的执行 <aop:pointcut 
+		id="txPointcut" expression="execution(* com.lj.mvn_ssh.service..*.*(..))" 
+		/> 引用上面的事务策略txAdvice <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" 
+		/> </aop:config> -->
+
+	<!-- 声明日志记录通知 -->
+	<!-- <bean id="logInterceptor" class="us.xuhang.project.interceptor.LogInterceptor"></bean> -->
+	<!-- <aop:config> 配置一个切面 <aop:aspect id="point" ref="logInterceptor"> 配置切入点，指定切入点表达式 
+		此句也可放到 aop:aspect标签外依然有效 <aop:pointcut expression="execution(public * us.xuhang.project.service..*.*(..))" 
+		id="myMethod" /> 应用前置通知 <aop:before method="before" pointcut-ref="myMethod" 
+		/> 应用环绕通知需指定向下进行 <aop:around method="around" pointcut-ref="myMethod" /> 应用后通知 
+		<aop:after-returning method="afterReturning" pointcut-ref="myMethod" /> 应用抛出异常后通知 
+		<aop:after-throwing method="afterThrowing" pointcut-ref="myMethod" /> </aop:aspect> 
+		</aop:config> -->
+		
+		
+		
+		<!-- next is the spring hbase config -->
+		<!-- 配置hadoop的基本信息 -->
+	<hdp:configuration>
+		<!-- fs.default.name=${fs.default.name} -->
+		fs.defaultFS=hdfs://192.16.135.160:9000  
+	</hdp:configuration>
+	<!-- <context:property-placeholder location="classpath:hadoop.properties" /> -->
+	<!-- 配置zookeeper的信息，远程连接hbase时使用 -->
+	<!-- hbaseConfiguration其实就是指的<hdp:hbase-configuration/>配置的信息 -->
+	<hdp:hbase-configuration zk-quorum="192.16.135.160,192.16.135.161,192.16.135.165"
+		delete-connection="true"
+		zk-port="2181" configuration-ref="hadoopConfiguration"/>
+
+	<!-- hbaseConfiguration其实就是指的<hdp:hbase-configuration/>配置的信息 -->
+	<bean id="htemplate" class="org.springframework.data.hadoop.hbase.HbaseTemplate">
+
+		<property name="configuration" ref="hbaseConfiguration">
+
+		</property>
+	</bean>
+	<!-- 配置数据源 -->
+	<!-- <bean id="configBean"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:dataSource.properties" />
+	</bean> -->
+
+	<!-- 引入多个数据源文件 -->
+	<!-- <import resource="classpath:spring/applicationContext-hbase.xml" /> -->
+	<!-- 引入其他bean文件 -->
+	<!-- <import resource="classpath:spring/applicationContext-test.xml" /> -->
+</beans>

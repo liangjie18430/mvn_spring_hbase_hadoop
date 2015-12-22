@@ -13,12 +13,15 @@ http://www.uml.org.cn/sjjm/201407301.asp
 maven+hbase集成
 这个网址比较不错
 http://www.xuebuyuan.com/2047942.html
+
 spring+hbase集成
 http://blog.csdn.net/kky2010_110/article/details/23852959
 
 spring+hadoop集成
 http://www.aboutyun.com/thread-12128-1-1.html
 http://www.aboutyun.com/thread-10020-1-1.html
+
+
 springhadoop的jar包发布消息
 http://www.oschina.net/news/68099/spring-for-apache-hadoop-2-2-1
 http://projects.spring.io/spring-hadoop/
@@ -28,9 +31,9 @@ http://docs.spring.io/spring-hadoop/docs/2.2.1.RELEASE/reference/html/
 
 
 
+<--------------proxy-------------->
 
-
-
+http://blog.csdn.net/yongjian1092/article/details/7364451
 
 maven仓库：http://mvnrepository.com/
 

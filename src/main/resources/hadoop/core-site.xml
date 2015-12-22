@@ -18,7 +18,8 @@
 
 <configuration>
 <property>
-<name>fs.default.name</name>
+<!-- fs.default.name is deprecated,fs.defaultFS -->
+<name>fs.defaultFS</name>
 <value>hdfs://172.16.135.160:9000</value>
 </property>
 

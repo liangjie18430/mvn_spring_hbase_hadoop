@@ -28,9 +28,10 @@ public class HBase_test {
 		conf.set("hbase.zookeeper.property.clientPort", "2181");
 		// HBaseAdmin admin = new HBaseAdmin(conf);
 		HBaseAdmin admin = new HBaseAdmin(conf);
+		
 		HTableDescriptor tableDescriptor = admin
 				.getTableDescriptor(org.apache.hadoop.hbase.util.Bytes
-						.toBytes("test"));
+						.toBytes("blog"));
 		byte[] name = tableDescriptor.getName();
 		System.out.println(new String(name));
 		HColumnDescriptor[] columnFamilies = tableDescriptor
