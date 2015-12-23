@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @Transactional is use to make the method has transaction
+ * 
+ * Test is okay
  * @author root
  *
  */
@@ -35,8 +37,8 @@ public class SpringTestFrame {
 		System.out.println("hbase.zookeeper.quorum:"+hbaseTest.getConfiguration().get("hbase.zookeeper.quorum"));
 		System.out.println("hbase.master:"+hbaseTest.getConfiguration().get("hbase.master"));
 		System.out.println("hbase.zookeeper.property.clientPort:"+hbaseTest.getConfiguration().get("hbase.zookeeper.property.clientPort"));
-		hbaseTest.getConfiguration().set("hbase.master","192.16.135.160:60000");
-		System.out.println("hbase.master2:"+hbaseTest.getConfiguration().get("hbase.master"));
+		//hbaseTest.getConfiguration().set("hbase.master","172.16.135.160:60000");
+		//System.out.println("hbase.master2:"+hbaseTest.getConfiguration().get("hbase.master"));
 		hbaseTest.find("blog", "article", new RowMapper<String>() {
 
 			@Override

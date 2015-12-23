@@ -13,8 +13,7 @@ http://www.springframework.org/schema/hadoop
 http://www.springframework.org/schema/hadoop/spring-hadoop-2.1.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-4.2.xsd">
-<!-- xsi:xsi:noNamespaceSchemaLocation="classpath:"> -->
-<!-- xsi:noNamespaceSchemaLocation="classpath:spring-hadoop-2.1.xsd"> -->
+
 
 
 	<!-- <bean id="basicDao" class="com.lj.mvn_ssh.dao.impl.BasicDaoImpl"> <property 
@@ -71,7 +70,7 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 	<!-- <context:property-placeholder location="classpath:hadoop.properties" /> -->
 	<!-- 配置zookeeper的信息，远程连接hbase时使用 -->
 	<!-- hbaseConfiguration其实就是指的<hdp:hbase-configuration/>配置的信息 -->
-	<hdp:hbase-configuration zk-quorum="192.16.135.160,192.16.135.161,192.16.135.165"
+	<hdp:hbase-configuration zk-quorum="172.16.135.160,172.16.135.161,172.16.135.165"
 		delete-connection="true"
 		zk-port="2181" configuration-ref="hadoopConfiguration"/>
 
