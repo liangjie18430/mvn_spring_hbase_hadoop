@@ -135,6 +135,24 @@
 			<scope>system</scope>
 			<systemPath>${JAVA_HOME}/lib/tools.jar</systemPath>
 		</dependency>
+		<!-- 添加sqljdbc4依赖包 -->
+		<dependency>
+			<groupId>com.hynnet</groupId>
+			<artifactId>sqljdbc-chs</artifactId>
+			<version>4.0.2206.100</version>
+		</dependency>
+		<!-- 添加连接mysql的驱动包 -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.38</version>
+		</dependency>
+		<!-- 添加oracle的驱动包 -->
+		<!-- <dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>10.2.0.3.0</version>
+		</dependency> -->
 
 	</dependencies>
 	<build>

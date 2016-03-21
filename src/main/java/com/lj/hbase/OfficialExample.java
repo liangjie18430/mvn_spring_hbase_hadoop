@@ -100,11 +100,13 @@ public class OfficialExample {
 		Configuration config = HBaseConfiguration.create();
 
 		// Add any necessary configuration files (hbase-site.xml, core-site.xml)
-		config.addResource(new Path(System.getenv("HBASE_CONF_DIR"),
+		/*config.addResource(new Path(System.getenv("HBASE_CONF_DIR"),
 				"hbase-site.xml"));
 		config.addResource(new Path(System.getenv("HADOOP_CONF_DIR"),
-				"core-site.xml"));
-		createSchemaTables(config);
-		modifySchema(config);
+				"core-site.xml"));*/
+		System.out.println(new Path(System.getenv("HBASE_CONF_DIR"),
+				"hbase-site.xml"));
+		/*createSchemaTables(config);
+		modifySchema(config);*/
 	}
 }
