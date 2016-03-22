@@ -4,6 +4,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
@@ -30,7 +31,11 @@ public class BulkLoadDriver extends Configured implements Tool{
 		configuration.set("COLUMN_FAMILY_1", COLUMN_FAMILY_1);
 		configuration.set("COLUMN_FAMILY_2", COLUMN_FAMILY_2);
 		Job job = Job.getInstance(configuration,"Bulk Load::"+TABLE_NAME);
-		
+		//通过设置一个类来确定jar的位置
+		job.setJarByClass(BulkLoadDriver.class);
+		//使用命令行，输入的string类型的格式
+		job.setInputFormatClass(TextInputFormat.class);
+		//job.setMapOutputKeyClass(theClass);
 		return 0;
 	}
 	
@@ -45,7 +50,7 @@ public class BulkLoadDriver extends Configured implements Tool{
 				PrintTool.print("Job failed");
 			}
 		}catch(Exception ex){
-			
+			ex.printStackTrace();
 		}
 	}
 
