@@ -63,8 +63,8 @@ public class WordCount2 {
 
 	public static void main(String[] args) throws Exception {
 		String ip="172.16.135.160";
-		String input = "hdfs://"+ip+":9000/hbase/user/lj/hadoop_test.txt";
-		String output = "hdfs://"+ip+":9000/hbase/user/lj/hadoop_test/result";
+		String input = "hdfs://"+ip+":9000/usr/lj/input/test.txt";
+		String output = "hdfs://"+ip+":9000/usr/lj/input/result";
 
 		JobConf conf = new JobConf(WordCount2.class);
 		conf.setJobName("WordCount");

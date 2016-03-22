@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+	<bean id="testService" class="com.lj.mvn_ssh.service.impl.TestServiceImpl">
+		<property name="basicDao" ref="basicDao" />
+	</bean>
+	<!-- 配置数据源 -->
+	<bean id="testAction"
+		class="com.lj.mvn_ssh.action.Impl.TestActionImpl">
+		<property name="testService" ref="testService" />
+	</bean>
+	
+	
+	
+	
+	
+	
+</beans>
