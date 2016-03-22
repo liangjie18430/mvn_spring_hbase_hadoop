@@ -7,8 +7,9 @@ import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Admin;
 import org.apache.hadoop.hbase.client.Connection;
-
-import com.lj.conn.HBaseConn;
+import com.lj.conn.HBaseConnectionFactory;
+import com.lj.conn.IConnectionProvider;
+import com.lj.conn.IDataBaseConnection;
 
 public class HBaseDao {
 
@@ -153,7 +154,9 @@ public class HBaseDao {
 	}
 
 	public void init() throws IOException {
-		conn = HBaseConn.getHbaseConn();
+		IConnectionProvider provider = new HBaseConnectionFactory();
+		IDataBaseConnection obj = provider.produce();
+		conn = (Connection) obj.getConnection();
 		// 获取admin对象
 		admin = conn.getAdmin();
 	}

@@ -13,7 +13,7 @@ import com.lj.tools.ResourcesConfig;
  * @author Administrator
  *
  */
-public class HBaseConn {
+public class HBaseConnection implements IDataBaseConnection{
 	//private static String configName = "hbase-site.xml";
 	//取得Hbase的连接
 /*	public static Connection getHbaseConn() throws IOException{
@@ -21,8 +21,14 @@ public class HBaseConn {
 		return conn;
 	}*/
 	
-	public static Connection getHbaseConn() throws IOException{
-		Connection conn = ConnectionFactory.createConnection(ResourcesConfig.getHbaseConfig());
+	public Connection getConnection(){
+		Connection conn = null;
+		try {
+			conn = ConnectionFactory.createConnection(ResourcesConfig.getHbaseConfig());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return conn;
 	}
 }

@@ -6,8 +6,9 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.lj.conn.MysqlConn;
+import com.lj.conn.IConnectionProvider;
+import com.lj.conn.IDataBaseConnection;
+import com.lj.conn.MysqlConnectionFactory;
 import com.lj.model.CommonModel;
 import com.lj.model.SqlTableHeadModel;
 import com.lj.tools.PrintTool;
@@ -21,7 +22,7 @@ public class MySqlDao {
 
 	public List<CommonModel> excuteSqlQueryToCommonModel(String sql)
 			throws ClassNotFoundException, SQLException {
-		conn = MysqlConn.getConnection();
+		init();
 		pst = conn.prepareStatement(sql);
 		rs = pst.executeQuery();
 		rsmd = rs.getMetaData();
@@ -68,7 +69,7 @@ public class MySqlDao {
 	
 	public List<SqlTableHeadModel> getAllTableHeadMessage(String sql)
 			throws ClassNotFoundException, SQLException {
-		conn = MysqlConn.getConnection();
+		init();
 		pst = conn.prepareStatement(sql);
 		rs = pst.executeQuery();
 		rsmd = rs.getMetaData();
@@ -102,6 +103,12 @@ public class MySqlDao {
 		// 执行完后，将所有关闭
 		close();
 		return lismodel;
+	}
+	
+	private void init(){
+		IConnectionProvider provider = new MysqlConnectionFactory();
+		IDataBaseConnection obj = provider.produce();
+		conn = (Connection) obj.getConnection();
 	}
 	private void close() {
 		try {
