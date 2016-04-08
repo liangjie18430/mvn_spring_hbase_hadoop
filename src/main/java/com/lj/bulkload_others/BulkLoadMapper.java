@@ -35,7 +35,13 @@ public class BulkLoadMapper extends Mapper<LongWritable, Text, ImmutableBytesWri
 			String[] values = value.toString().split(dataSeperator);
 			ImmutableBytesWritable rowKey = new ImmutableBytesWritable();
 			Put put = new Put(Bytes.toBytes(values[0]));
-			//put.
+			//对一个列族下添加俩个列，一个列为month，一个为day
+			put.addColumn(Bytes.toBytes(columnFamily1), Bytes.toBytes("month"), Bytes.toBytes(values[1]));
+			put.addColumn(Bytes.toBytes(columnFamily1), Bytes.toBytes("day"), Bytes.toBytes(values[2]));
+			for(int i = 3;i<values.length;i++){
+				put.addColumn(Bytes.toBytes(columnFamily2), Bytes.toBytes("hour:"+i), Bytes.toBytes(values[i]));
+			}
+			context.write(rowKey, put);
 					
 		}catch(Exception ex){
 			ex.printStackTrace();

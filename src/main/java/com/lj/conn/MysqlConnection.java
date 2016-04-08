@@ -14,7 +14,7 @@ import java.sql.PreparedStatement;
  *
  */
 public class MysqlConnection implements IDataBaseConnection{
-	public static final String url = "jdbc:mysql://172.16.135.160/DSDATA";  
+	public static final String url = "jdbc:mysql://172.16.135.160/DSDATA?useUnicode=true&characterEncoding=UTF-8";  
     public static final String DRIVER = "com.mysql.jdbc.Driver";  
     public static final String USER = "root";  
     public static final String PWD = "123456"; 

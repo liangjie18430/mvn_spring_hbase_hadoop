@@ -1,7 +1,11 @@
 package com.lj.hbase;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.Cell;
+import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
@@ -82,11 +86,15 @@ public class HBaseDAO {
      * @param data
      * @throws Exception
      */
-    public static void putCell(HTable table, String rowKey, String columnFamily, String identifier, String data) throws Exception{
+    public static void putCell(HTable table, String rowKey, String columnFamily, String qualifier, String value) throws Exception{
         Put p1 = new Put(Bytes.toBytes(rowKey));
-        p1.add(Bytes.toBytes(columnFamily), Bytes.toBytes(identifier), Bytes.toBytes(data));
+        /*Cell cell = new Ce
+        p1.add(kv)*/
+        p1.addColumn(Bytes.toBytes(columnFamily), Bytes.toBytes(qualifier), Bytes.toBytes(value));
+        //下面这个方法已经过时
+        //p1.add(Bytes.toBytes(columnFamily), Bytes.toBytes(qualifier), Bytes.toBytes(value));
         table.put(p1);
-        System.out.println("put '"+rowKey+"', '"+columnFamily+":"+identifier+"', '"+data+"'");
+        System.out.println("put '"+rowKey+"', '"+columnFamily+":"+qualifier+"', '"+value+"'");
     }
     
     /**
@@ -98,6 +106,24 @@ public class HBaseDAO {
     public static Result getRow(HTable table, String rowKey) throws Exception {
         Get get = new Get(Bytes.toBytes(rowKey));
         Result result = table.get(get);
+        
+        System.out.println("Get: "+result);
+        return result;
+    }
+    
+    
+    /**
+     * get a row identified by rowkey
+     * @param HTable, create by : HTable table = new HTable(conf, "tablename")
+     * @param rowKey
+     * @throws Exception
+     */
+    public static Result getRow(HTable table, String rowKey,String columnFamily,String column) throws Exception {
+        Get get = new Get(Bytes.toBytes(rowKey));
+        Result result = table.get(get);
+        byte[] rb = result.getValue(Bytes.toBytes(columnFamily), Bytes.toBytes(column));
+        String value = new String(rb,"UTF-8");
+        System.out.println(value);
         System.out.println("Get: "+result);
         return result;
     }
@@ -122,6 +148,19 @@ public class HBaseDAO {
     public static ResultScanner scanAll(HTable table) throws Exception {
         Scan s =new Scan();
         ResultScanner rs = table.getScanner(s);
+      
+        
+        for(Result result:rs){
+        	List<Cell> cells = result.listCells();
+        	for(Cell cell:cells){
+        		byte[] rb = cell.getValueArray();
+        		 String row = new String(result.getRow(),"UTF-8");
+                 String family = new String(CellUtil.cloneFamily(cell),"UTF-8");
+                 String qualifier = new String(CellUtil.cloneQualifier(cell),"UTF-8");
+                 String value = new String(CellUtil.cloneValue(cell),"UTF-8");
+                 System.out.println("[row:"+row+"],[family:"+family+"],[qualifier:"+qualifier+"],[value:"+value+"]");
+        	}
+        }
         return rs;
     }
     
@@ -166,7 +205,7 @@ public class HBaseDAO {
     	
 
 //      HBaseDAO.createTable("apitable", "testcf");
-//      HBaseDAO.putRow("apitable", "100001", "testcf", "name", "liyang");
+      //HBaseDAO.putRow("apitable", "100001", "testcf", "name", "liyang");
 //      HBaseDAO.putRow("apitable", "100003", "testcf", "name", "leon");
 //    	HBaseDAO.deleteRow("apitable", "100002");
 //    	HBaseDAO.getRow("apitable", "100003");

@@ -14,7 +14,7 @@ import com.lj.model.SqlTableHeadModel;
 import com.lj.tools.PrintTool;
 import com.mysql.jdbc.Connection;
 
-public class MySqlDao {
+public class MySqlDao implements IDao{
 	private Connection conn;
 	private PreparedStatement pst;
 	private ResultSet rs;
@@ -22,7 +22,7 @@ public class MySqlDao {
 
 	public List<CommonModel> excuteSqlQueryToCommonModel(String sql)
 			throws ClassNotFoundException, SQLException {
-		init();
+		
 		pst = conn.prepareStatement(sql);
 		rs = pst.executeQuery();
 		rsmd = rs.getMetaData();
@@ -39,7 +39,7 @@ public class MySqlDao {
 			model = new CommonModel();
 			lisvalue = new ArrayList<String>();
 			for (int i = 1; i <= columnCount; i++) {
-				lisvalue.add(rsmd.getColumnName(i));
+				lisvalue.add(rsmd.getColumnName(i).trim());
 			}
 			// 将一行的数据放入到一个model中
 			model.setFields(lisvalue);
@@ -53,7 +53,7 @@ public class MySqlDao {
 				lisvalue = new ArrayList<String>();
 				// 将每一行的属性值加入
 				for (int i = 1; i <= columnCount; i++) {
-					lisvalue.add(rs.getString(i) == null ? "" : rs.getString(i));
+					lisvalue.add(rs.getString(i) == null ? "" : rs.getString(i).trim());
 				}
 				// 将一行的数据放入到一个model中
 				model.setFields(lisvalue);
@@ -62,14 +62,20 @@ public class MySqlDao {
 			}
 		}
 		// 执行完后，将所有关闭
-		close();
+		
 		return lismodel;
 	}
 	
-	
+	/**
+	 * 根据相应的sql语句，获取结果的各个列信息
+	 * @param sql 需要查询的语句
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
 	public List<SqlTableHeadModel> getAllTableHeadMessage(String sql)
 			throws ClassNotFoundException, SQLException {
-		init();
+		
 		pst = conn.prepareStatement(sql);
 		rs = pst.executeQuery();
 		rsmd = rs.getMetaData();
@@ -88,10 +94,10 @@ public class MySqlDao {
 				//创建一个CommonModel对象保存所有信息
 				tableMessModel = new SqlTableHeadModel();
 				//获取表名
-				tableMessModel.setColumnName(rsmd.getColumnName(i)+"");
+				tableMessModel.setColumnName(rsmd.getColumnName(i).trim()+"");
 				//获取类型名
-				tableMessModel.setColumnClassName(rsmd.getColumnClassName(i)+"");
-				tableMessModel.setColumnTypeName(rsmd.getColumnTypeName(i));
+				tableMessModel.setColumnClassName(rsmd.getColumnClassName(i).trim()+"");
+				tableMessModel.setColumnTypeName(rsmd.getColumnTypeName(i).trim());
 				//某列类型的精确度(类型的长度)
 				tableMessModel.setPrecision(rsmd.getPrecision(i)+"");
 				// 是否自动递增 
@@ -101,16 +107,16 @@ public class MySqlDao {
 			}
 		}
 		// 执行完后，将所有关闭
-		close();
+		
 		return lismodel;
 	}
 	
-	private void init(){
+	public void init(){
 		IConnectionProvider provider = new MysqlConnectionFactory();
 		IDataBaseConnection obj = provider.produce();
 		conn = (Connection) obj.getConnection();
 	}
-	private void close() {
+	public void close() {
 		try {
 			if (rs != null) {
 				rs.close();
